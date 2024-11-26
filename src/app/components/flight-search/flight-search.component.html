@@ -1,0 +1,98 @@
+<div class="card">
+    <div class="card-body">
+      @if (loading$ | async) {
+        <app-loading-spinner />
+      } @else {
+        <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Origin</label>
+              <div class="position-relative">
+                <input type="text" class="form-control" formControlName="origin"
+                       (focus)="showOriginDropdown = true">
+                @if (showOriginDropdown && filteredOriginLocations.length > 0) {
+                  <div class="dropdown-menu show position-absolute w-100">
+                    @for (location of filteredOriginLocations; track location.iataCode) {
+                      <button type="button" class="dropdown-item"
+                              (click)="selectLocation(location, 'origin')">
+                        {{location.cityName}} ({{location.iataCode}})
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="text-danger" *ngIf="searchForm.get('origin')?.errors?.['required'] && searchForm.get('origin')?.touched">
+                Origin is required
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <label class="form-label">Destination</label>
+              <div class="position-relative">
+                <input type="text" class="form-control" formControlName="destination"
+                       (focus)="showDestinationDropdown = true">
+                @if (showDestinationDropdown && filteredDestinationLocations.length > 0) {
+                  <div class="dropdown-menu show position-absolute w-100">
+                    @for (location of filteredDestinationLocations; track location.iataCode) {
+                      <button type="button" class="dropdown-item"
+                              (click)="selectLocation(location, 'destination')">
+                        {{location.cityName}} ({{location.iataCode}})
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="text-danger" *ngIf="searchForm.get('destination')?.errors?.['required'] && searchForm.get('destination')?.touched">
+                Destination is required
+              </div>
+            </div>
+  
+            <div class="col-md-4">
+              <label class="form-label">Currency</label>
+              <select class="form-select" formControlName="currency">
+                <option value="USD">USD</option>
+                <option value="COP">COP</option>
+              </select>
+            </div>
+  
+            <div class="col-md-4">
+              <label class="form-label">Flight Type</label>
+              <select class="form-select" formControlName="type" (change)="onFlightTypeChange()">
+                <option value="oneway">One Way</option>
+                <option value="roundtrip">Round Trip</option>
+              </select>
+            </div>
+  
+            <div class="col-md-4">
+              <label class="form-label">Departure Date</label>
+              <input
+                  type="date"
+                  class="form-control"
+                  formControlName="departureDate"
+                  [min]="minDate" 
+                />
+            </div>
+  
+            <div class="col-md-4" *ngIf="searchForm.get('type')?.value === 'roundtrip'">
+                <label class="form-label">Return Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="returnDate"
+                  [min]="minDate" 
+                />
+              </div>
+          </div>
+          <div class="text-danger" *ngIf="searchForm.get('returnDate')?.errors?.['invalidDate']">
+            The selected date cannot be earlier than {{ minDate }}.
+          </div>
+  
+          <div class="mt-3">
+            <button type="submit" class="btn btn-primary" [disabled]="searchForm.invalid">
+              Search Flights
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>

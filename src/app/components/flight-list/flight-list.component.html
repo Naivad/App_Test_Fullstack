@@ -1,0 +1,83 @@
+<div class="mb-3">
+    <button class="btn btn-secondary" (click)="backToSearch()">Back to Search</button>
+  </div>
+  
+  @if (flights.length) {
+    <div class="row">
+      @for (flight of flights; track flight.flightID) {
+        <div class="col-12 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <h5 class="card-title">
+                  {{flight.directCarrier}} {{flight.directFlightNumber}}
+                  <span class="badge bg-primary ms-2">{{flight.travelDirection}}</span>
+                  @if (flight.isDirect) {
+                    <span class="badge bg-success ms-2">Direct Flight</span>
+                  }
+                </h5>
+                <h5 class="text-primary">${{flight.directPrice.toFixed(2)}}</h5>
+              </div>
+  
+              <div class="flight-details">
+                <div class="d-flex justify-content-between mb-3">
+                  <div>
+                    <strong>{{flight.origin}}</strong>
+                    <p class="text-muted mb-0">{{formatDateTime(flight.directDepartureTime)}}</p>
+                  </div>
+                  <div class="text-center">
+                    @if (flight.isDirect) {
+                      <i class="bi bi-airplane"></i>
+                      <p class="text-muted mb-0">Direct Flight</p>
+                    } @else {
+                      <i class="bi bi-airplane"></i>
+                      <p class="text-muted mb-0">{{flight.pathSegments.length + 1}} Segments</p>
+                    }
+                  </div>
+                  <div class="text-end">
+                    <strong>{{flight.destination}}</strong>
+                    <p class="text-muted mb-0">{{formatDateTime(flight.directArrivalTime)}}</p>
+                  </div>
+                </div>
+  
+                @if (!flight.isDirect) {
+                  <div class="connecting-flights mt-3">
+                    <h6>Flight Segments:</h6>
+                    <div class="list-group">
+                      <!-- First Segment -->
+                      <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                          <span>{{flight.segmentOrigin}} → {{flight.segmentDestination}}</span>
+                          <span>{{flight.segmentCarrier}} {{flight.segmentFlightNumber}}</span>
+                        </div>
+                        <small class="text-muted">
+                          {{formatDateTime(flight.segmentDepartureTime)}} - {{formatDateTime(flight.segmentArrivalTime)}}
+                        </small>
+                      </div>
+                      
+                      <!-- Connection Segments -->
+                      @for (segment of flight.pathSegments; track segment.directFlightNumber) {
+                        <div class="list-group-item">
+                          <div class="d-flex justify-content-between">
+                            <span>{{segment.segmentOrigin}} → {{segment.segmentDestination}}</span>
+                            <span>{{segment.directCarrier}} {{segment.directFlightNumber}}</span>
+                          </div>
+                          <small class="text-muted">
+                            {{formatDateTime(segment.segmentDepartureTime)}}
+                          </small>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="alert alert-info">
+      No flights found matching your search criteria.
+    </div>
+  }

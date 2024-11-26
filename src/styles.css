@@ -1,0 +1,36 @@
+/* Import Bootstrap CSS */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Global styles */
+body {
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.btn-primary {
+  padding: 8px 24px;
+}
+
+/* Autocomplete dropdown styles */
+.dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
