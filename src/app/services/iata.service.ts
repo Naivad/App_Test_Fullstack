@@ -9,13 +9,12 @@ import { environment } from "../../environments/environment";
 })
 export class IataService {
   private apiUrl = `${environment.urlAPI}/GetAirports`;
-  private apiKey = environment.funtionKey;
 
   constructor(private http: HttpClient) {}
 
   getIataLocations(): Observable<IataResponse> {
     const headers = new HttpHeaders({
-       'x-functions-key': this.apiKey
+
     });
 
     return this.http.get<IataResponse>(this.apiUrl, { headers }).pipe(

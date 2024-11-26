@@ -11,7 +11,7 @@ import { environment } from "../../environments/environment";
 })
 export class FlightService {
   private apiUrl = `${environment.urlAPI}/CheckFlights`;
-  private apiKey = environment.funtionKey;
+
 
   constructor(
     private http: HttpClient,
@@ -20,7 +20,7 @@ export class FlightService {
 
   searchFlights(criteria: SearchCriteria): Observable<FlightResponse> {
     const headers = new HttpHeaders({
-      'x-functions-key': this.apiKey
+ 
     });
 
     let params = new HttpParams()
