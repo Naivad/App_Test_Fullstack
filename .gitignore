@@ -4,6 +4,12 @@
 /out-tsc
 /bazel-out
 
+# Ignorar archivos .env
+.env
+.env.*
+# Ignorar archivos de entorno en Angular
+src/environments/environment*.ts
+
 # Node
 /node_modules
 npm-debug.log
